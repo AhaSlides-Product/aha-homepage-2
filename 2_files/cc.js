@@ -1,0 +1,1 @@
+if(console){var cookiedomainwarning='Error: The domain WWW.LINEARITY.IO is not authorized to show the cookie banner for domain group ID 0b09125b-0fb4-4b97-9973-7c3fe9d8b034. Please add it to the domain group in the Cookiebot Manager to authorize the domain.';if(typeof console.warn === 'function'){console.warn(cookiedomainwarning)}else{console.log(cookiedomainwarning)}};
