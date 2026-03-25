@@ -305,7 +305,6 @@ p {
   /* Center the main image */
   position: relative;
   height: auto;
-  aspect-ratio: 489 / 511;
 }
 
 .hero-visuals-bg {
