@@ -124,24 +124,24 @@
   // ============================================================
 
   function initHeroEntrance() {
-    const bg = document.querySelector('.hero-visuals-bg')
-    const floats = document.querySelectorAll('.visual-item.floating')
-    if (!bg && !floats.length) return
+    const hero = document.querySelector('.hero-homepage')
+    if (!hero) return
 
-    if (bg) gsap.set(bg, { opacity: 0 })
-    if (floats.length) gsap.set(floats, { opacity: 0, scale: 0.95 })
+    // Reuse the same reveal pattern as "Why pick AhaSlides?" section
+    // (y: 30, duration: 0.5, ease: power2.out, stagger: 0.1)
+    const els = hero.querySelectorAll('.hero-title, .btn.is-pink, .hero-feature-list > *')
+    if (!els.length) return
 
-    const tl = gsap.timeline({ delay: 0.1 })
-
-    if (bg) {
-      tl.to(bg, { opacity: 1, duration: 0.5, ease: 'power2.out' })
-    }
-    if (floats.length) {
-      tl.to(floats,
-        { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: 'back.out(1.2)' },
-        '-=0.2'
-      )
-    }
+    gsap.set(els, { y: 30, opacity: 0 })
+    gsap.to(els, {
+      y: 0,
+      opacity: 1,
+      duration: 0.5,
+      stagger: 0.1,
+      ease: 'power2.out',
+      delay: 0.1,
+      overwrite: 'auto'
+    })
   }
 
   // ============================================================
