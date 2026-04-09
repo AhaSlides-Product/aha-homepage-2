@@ -1773,8 +1773,8 @@ html[lang]:not([lang^="en"]) .hero-title__animated {
 
 .multi-text {
   display: inline-grid;
-  vertical-align: bottom;
-  overflow: hidden;
+  vertical-align: baseline;
+  line-height: inherit;
 }
 
 .multi-text .status {
