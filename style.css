@@ -723,7 +723,6 @@ p {
 
 .why-pick-section {
   background-color: var(--theme-2-bg);
-  padding: 6rem 2rem 0;
   display: flex;
   justify-content: center;
 }
