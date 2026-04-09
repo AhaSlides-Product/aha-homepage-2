@@ -1780,10 +1780,10 @@ html[lang]:not([lang^="en"]) .hero-title__animated {
 .multi-text .status {
   grid-area: 1 / 1;
   color: var(--status-color);
-  will-change: transform, clip-path;
-  clip-path: inset(0 0 100% 0);
-  transform: translateY(40%);
-  animation: textReveal 4.5s infinite;
+  will-change: transform, opacity;
+  opacity: 0;
+  transform: translateY(50%);
+  animation: textChange 4.5s infinite;
 }
 
 .multi-text .status:nth-child(1) {
@@ -1798,30 +1798,38 @@ html[lang]:not([lang^="en"]) .hero-title__animated {
   animation-delay: 3s;
 }
 
-@keyframes textReveal {
+@keyframes textChange {
   0% {
-    clip-path: inset(0 0 100% 0);
-    transform: translateY(40%);
+    transform: translateY(50%);
+    opacity: 0;
   }
 
-  8% {
-    clip-path: inset(0 0 0% 0);
-    transform: translateY(0);
+  10% {
+    transform: translateY(-5%);
+    opacity: 1;
+  }
+
+  15% {
+    transform: translateY(0%);
   }
 
   25% {
-    clip-path: inset(0 0 0% 0);
-    transform: translateY(0);
+    transform: translateY(0%);
   }
 
-  33% {
-    clip-path: inset(100% 0 0 0);
-    transform: translateY(-40%);
+  30% {
+    transform: translateY(5%);
+    opacity: 1;
+  }
+
+  40% {
+    transform: translateY(-50%);
+    opacity: 0;
   }
 
   100% {
-    clip-path: inset(100% 0 0 0);
-    transform: translateY(-40%);
+    transform: translateY(-50%);
+    opacity: 0;
   }
 }
 
@@ -1830,7 +1838,7 @@ html[lang]:not([lang^="en"]) .hero-title__animated {
 @media (prefers-reduced-motion: reduce) {
   .multi-text .status {
     animation: none;
-    clip-path: none;
+    opacity: 1;
     transform: none;
   }
 
