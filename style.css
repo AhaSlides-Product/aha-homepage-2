@@ -1812,3 +1812,14 @@ html[lang]:not([lang^="en"]) .hero-title__animated {
     display: none;
   }
 }
+
+/* ─── Hero feature list: hide horizontal scrollbar ─── */
+
+.hero-feature-list {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.hero-feature-list::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
+}
