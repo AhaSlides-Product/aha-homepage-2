@@ -191,7 +191,6 @@
     const header = document.querySelector('.distraction-header')
     if (!header) return
 
-    const section = header.closest('.distraction-section')
     const headings = header.querySelectorAll('h2')
 
     headings.forEach(h2 => {
