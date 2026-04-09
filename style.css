@@ -147,6 +147,114 @@ p {
   background-color: #e5e7eb;
 }
 
+/* ─── Hero title ─── */
+/* Language-based display: show animated version for English, static for others */
+.hero-title__static {
+  display: none;
+}
+
+.hero-title__animated {
+  display: inline;
+}
+
+html[lang]:not([lang^="en"]) .hero-title__static {
+  display: inline;
+}
+
+html[lang]:not([lang^="en"]) .hero-title__animated {
+  display: none;
+}
+
+/* ─── Multi-text rotating animation ─── */
+
+.hero-multi-text {
+  display: inline-grid;
+  vertical-align: baseline;
+  line-height: inherit;
+}
+
+.hero-multi-text-status {
+  grid-area: 1 / 1;
+  color: var(--status-color);
+  will-change: transform, opacity;
+  opacity: 0;
+  transform: translateY(50%);
+  animation: textChange 4.5s infinite;
+}
+
+.hero-multi-text-status:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.hero-multi-text-status:nth-child(2) {
+  animation-delay: 1.5s;
+}
+
+.hero-multi-text-status:nth-child(3) {
+  animation-delay: 3s;
+}
+
+@keyframes textChange {
+  0% {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+
+  10% {
+    transform: translateY(-5%);
+    opacity: 1;
+  }
+
+  15% {
+    transform: translateY(0%);
+  }
+
+  25% {
+    transform: translateY(0%);
+  }
+
+  30% {
+    transform: translateY(5%);
+    opacity: 1;
+  }
+
+  40% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+}
+
+/* ─── Accessibility: respect reduced motion ─── */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-multi-text-status {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Show only the first word when motion is reduced */
+  .hero-multi-text-status:nth-child(n+2) {
+    display: none;
+  }
+}
+
+/* ─── Hero feature list: hide horizontal scrollbar ─── */
+
+.hero-feature-list {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.hero-feature-list::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Opera */
+}
+
 /* Logo Strip */
 .integrations {
   text-align: center;
@@ -965,112 +1073,4 @@ p {
   .testimonial-card {
     flex-direction: column-reverse;
   }
-}
-
-/* ─── Hero title ─── */
-/* Language-based display: show animated version for English, static for others */
-.hero-title__static {
-  display: none;
-}
-
-.hero-title__animated {
-  display: inline;
-}
-
-html[lang]:not([lang^="en"]) .hero-title__static {
-  display: inline;
-}
-
-html[lang]:not([lang^="en"]) .hero-title__animated {
-  display: none;
-}
-
-/* ─── Multi-text rotating animation ─── */
-
-.hero-multi-text {
-  display: inline-grid;
-  vertical-align: baseline;
-  line-height: inherit;
-}
-
-.hero-multi-text-status {
-  grid-area: 1 / 1;
-  color: var(--status-color);
-  will-change: transform, opacity;
-  opacity: 0;
-  transform: translateY(50%);
-  animation: textChange 4.5s infinite;
-}
-
-.hero-multi-text-status:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.hero-multi-text-status:nth-child(2) {
-  animation-delay: 1.5s;
-}
-
-.hero-multi-text-status:nth-child(3) {
-  animation-delay: 3s;
-}
-
-@keyframes textChange {
-  0% {
-    transform: translateY(50%);
-    opacity: 0;
-  }
-
-  10% {
-    transform: translateY(-5%);
-    opacity: 1;
-  }
-
-  15% {
-    transform: translateY(0%);
-  }
-
-  25% {
-    transform: translateY(0%);
-  }
-
-  30% {
-    transform: translateY(5%);
-    opacity: 1;
-  }
-
-  40% {
-    transform: translateY(-50%);
-    opacity: 0;
-  }
-
-  100% {
-    transform: translateY(-50%);
-    opacity: 0;
-  }
-}
-
-/* ─── Accessibility: respect reduced motion ─── */
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-multi-text-status {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-
-  /* Show only the first word when motion is reduced */
-  .hero-multi-text-status:nth-child(n+2) {
-    display: none;
-  }
-}
-
-/* ─── Hero feature list: hide horizontal scrollbar ─── */
-
-.hero-feature-list {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
-}
-
-.hero-feature-list::-webkit-scrollbar {
-  display: none; /* Chrome/Safari/Opera */
 }
