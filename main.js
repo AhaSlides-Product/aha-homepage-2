@@ -120,31 +120,6 @@
   }
 
   // ============================================================
-  // HERO ENTRANCE
-  // ============================================================
-
-  function initHeroEntrance() {
-    const bg = document.querySelector('.hero-visuals-bg')
-    const floats = document.querySelectorAll('.visual-item.floating')
-    if (!bg && !floats.length) return
-
-    if (bg) gsap.set(bg, { opacity: 0 })
-    if (floats.length) gsap.set(floats, { opacity: 0, scale: 0.95 })
-
-    const tl = gsap.timeline({ delay: 0.1 })
-
-    if (bg) {
-      tl.to(bg, { opacity: 1, duration: 0.5, ease: 'power2.out' })
-    }
-    if (floats.length) {
-      tl.to(floats,
-        { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: 'back.out(1.2)' },
-        '-=0.2'
-      )
-    }
-  }
-
-  // ============================================================
   // STICKY STACKING CARDS
   // ============================================================
 
@@ -376,6 +351,7 @@
       })
     }
 
+    reveal('.hero-homepage', '.hero-title, .btn.is-pink, .hero-feature-list > *')
     reveal('.why-pick-header', 'h2, p')
     reveal('.why-pick-grid', '.why-pick-card', { stagger: 0.15 })
     reveal('.why-pick-cta', '.btn', { stagger: 0.1 })
@@ -580,7 +556,6 @@
     // GSAP-dependent features
     if (!gsapAvailable()) return
 
-    initHeroEntrance()
     initUsecaseStackingCards()
     initTestimonialStackingCards()
     initMoreCardAnimation()
