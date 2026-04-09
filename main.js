@@ -120,31 +120,6 @@
   }
 
   // ============================================================
-  // HERO ENTRANCE
-  // ============================================================
-
-  function initHeroEntrance() {
-    const hero = document.querySelector('.hero-homepage')
-    if (!hero) return
-
-    // Reuse the same reveal pattern as "Why pick AhaSlides?" section
-    // (y: 30, duration: 0.5, ease: power2.out, stagger: 0.1)
-    const els = hero.querySelectorAll('.hero-title, .btn.is-pink, .hero-feature-list > *')
-    if (!els.length) return
-
-    gsap.set(els, { y: 30, opacity: 0 })
-    gsap.to(els, {
-      y: 0,
-      opacity: 1,
-      duration: 0.5,
-      stagger: 0.1,
-      ease: 'power2.out',
-      delay: 0.1,
-      overwrite: 'auto'
-    })
-  }
-
-  // ============================================================
   // STICKY STACKING CARDS
   // ============================================================
 
@@ -376,6 +351,7 @@
       })
     }
 
+    reveal('.hero-homepage', '.hero-title, .btn.is-pink, .hero-feature-list > *')
     reveal('.why-pick-header', 'h2, p')
     reveal('.why-pick-grid', '.why-pick-card', { stagger: 0.15 })
     reveal('.why-pick-cta', '.btn', { stagger: 0.1 })
@@ -580,7 +556,6 @@
     // GSAP-dependent features
     if (!gsapAvailable()) return
 
-    initHeroEntrance()
     initUsecaseStackingCards()
     initTestimonialStackingCards()
     initMoreCardAnimation()
