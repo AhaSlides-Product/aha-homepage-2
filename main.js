@@ -55,40 +55,6 @@
   }
 
   // ============================================================
-  // HEADER SHOW / HIDE
-  // ============================================================
-
-  function initHeaderScroll() {
-    const header = document.querySelector('.header.navbar-2')
-    if (!header) return
-
-    const THRESHOLD = 170
-    let lastY = window.scrollY
-    let passed = false
-
-    const update = () => {
-      const y = window.scrollY
-      const up = y < lastY
-
-      if (y <= THRESHOLD) {
-        header.classList.remove('header--hidden')
-        passed = false
-      } else if (!passed) {
-        header.classList.add('header--hidden')
-        passed = true
-      } else if (up) {
-        header.classList.remove('header--hidden')
-      } else {
-        header.classList.add('header--hidden')
-      }
-
-      lastY = y
-    }
-
-    window.addEventListener('scroll', rafThrottle(update), { passive: true })
-  }
-
-  // ============================================================
   // LAZY VIDEO (IntersectionObserver)
   // ============================================================
 
@@ -404,7 +370,6 @@
 
     // Non-GSAP features
     initTopbarForm()
-    initHeaderScroll()
     initLazyVideos()
 
     // GSAP-dependent features
