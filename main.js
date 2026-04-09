@@ -123,59 +123,6 @@
   // STICKY STACKING CARDS
   // ============================================================
 
-  function setupStackingCards(cardSelector, getStart) {
-    const cards = document.querySelectorAll(cardSelector)
-    if (!cards.length) return
-
-    ScrollTrigger.getAll()
-      .filter(st => [...cards].some(c => st.trigger === c || st.vars?.trigger === c))
-      .forEach(st => st.kill())
-
-    const getStickyTop = (card) => parseFloat(getComputedStyle(card).top) || 0
-
-    cards.forEach((card, i) => {
-      card.style.zIndex = i + 1
-      gsap.set(card, { clearProps: 'scale,opacity' })
-
-      if (i < cards.length - 1) {
-        const nextCard = cards[i + 1]
-
-        gsap.to(card, {
-          scale: 0.8,
-          opacity: 0,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: nextCard,
-            start: () => getStart(card, getStickyTop(card)),
-            end: () => `top ${getStickyTop(card)}px`,
-            scrub: true,
-            invalidateOnRefresh: true
-          }
-        })
-      }
-    })
-
-    const updateActive = () => {
-      let activeIndex = -1
-      cards.forEach((card, i) => {
-        if (card.getBoundingClientRect().top <= getStickyTop(card) + 15) activeIndex = i
-      })
-
-      cards.forEach((card, i) => {
-        card.classList.toggle('card--past', i < activeIndex)
-      })
-    }
-
-    window.addEventListener('scroll', rafThrottle(updateActive), { passive: true })
-    updateActive()
-  }
-
-  function initUsecaseStackingCards() {
-    setupStackingCards('.usecase-card', (card, stickyTop) => {
-      return `top ${stickyTop + card.offsetHeight}px`
-    })
-  }
-
   // Testimonial: pure scroll listener + getBoundingClientRect — zero GSAP dependency.
   // Bypasses all GSAP ease/default/IX2 interference; inline style always wins.
   function initTestimonialStackingCards() {
@@ -225,54 +172,6 @@
     window.addEventListener('scroll', rafThrottle(update), { passive: true })
     window.addEventListener('resize', rafThrottle(update), { passive: true })
     update()
-  }
-
-  // ============================================================
-  // "THERE'S MORE!" CARD ILLUSTRATION
-  // ============================================================
-
-  function initMoreCardAnimation() {
-    const card = document.querySelector('.usecase-card[data-index="4"]')
-    if (!card) return
-
-    const items = card.querySelectorAll('.more-item')
-    const main = card.querySelector('.more-main')
-
-    const build = (opts) => {
-      gsap.set(items, { y: 400 })
-      gsap.set(main, { y: 220 })
-
-      gsap.timeline({
-        scrollTrigger: {
-          trigger: card,
-          start: 'top bottom',
-          end: opts.end,
-          scrub: opts.scrub,
-          invalidateOnRefresh: true
-        }
-      })
-        .to([items, main], { y: 0, stagger: 0.08, duration: 1.2, ease: 'power2.out' })
-        .to('.item-1', { y: opts.dispersalLg, duration: 2, ease: 'power1.out' }, 1.2)
-        .to('.item-2', { y: opts.dispersalLg, duration: 2, ease: 'power1.out' }, 1.3)
-        .to('.item-3', { y: opts.dispersalSm, duration: 2, ease: 'power1.out' }, 1.4)
-        .to('.item-4', { y: opts.dispersalSm, duration: 2, ease: 'power1.out' }, 1.5)
-    }
-
-    const endOffset = () => 'bottom top+=' + window.innerHeight * 1.4
-
-    const mm = gsap.matchMedia()
-    mm.add({
-      small:  '(max-width: 478px)',
-      medium: '(min-width: 479px) and (max-width: 767px)',
-      tablet: '(min-width: 768px) and (max-width: 991px)',
-      desktop:'(min-width: 992px)'
-    }, (ctx) => {
-      const { small, medium, tablet } = ctx.conditions
-      if (small)       build({ end: endOffset, scrub: 2, dispersalLg: -80, dispersalSm: -100 })
-      else if (medium) build({ end: endOffset, scrub: 2, dispersalLg: -150, dispersalSm: -120 })
-      else if (tablet) build({ end: endOffset, scrub: 2, dispersalLg: -110, dispersalSm: -80 })
-      else             build({ end: endOffset, scrub: 1.5, dispersalLg: -140, dispersalSm: -80 })
-    })
   }
 
   // ============================================================
@@ -366,51 +265,6 @@
     reveal('.faq-header', 'h2, p, .faq-contact')
     reveal('.faq-content', '.accordion-item', { stagger: 0.1 })
     reveal('.main-footer', '.footer-column, .footer-brand, .footer-bottom > *', { stagger: 0.05, start: 'top 95%' })
-  }
-
-  // ============================================================
-  // "WELCOME TO THE SHOW" — Create section entrance
-  // ============================================================
-
-  function initCreateSectionEntrance() {
-    const title = document.querySelector('.create-main-title')
-    const firstCard = document.querySelector('.usecase-card[data-index="0"]')
-    if (!title || !firstCard) return
-
-    const imageWrap = firstCard.querySelector('.usecase-card__image-wrap')
-    const contentEls = firstCard.querySelector('.usecase-card__content')?.children || []
-
-    let words = title.querySelectorAll('.create-h2-word')
-    if (!words.length) {
-      title.innerHTML = title.textContent.trim().split(/\s+/)
-        .map(w => `<span class="create-h2-word" style="display:inline-block">${w}</span>`)
-        .join(' ')
-      words = title.querySelectorAll('.create-h2-word')
-    }
-
-    const underline = title.parentElement.querySelector('.ai-underline-trigger')
-
-    gsap.set(words, { y: 28, opacity: 0 })
-    gsap.set(imageWrap, { y: 80, scale: 0.9, opacity: 0 })
-    gsap.set(contentEls, { y: 20, opacity: 0 })
-
-    const tl = gsap.timeline({ paused: true })
-
-    if (words.length) {
-      tl.to(words, { y: 0, opacity: 1, duration: 0.6, stagger: 0.06, ease: 'back.out(1.4)', overwrite: true })
-    }
-    if (underline) {
-      tl.to(underline, { onStart: () => underline.classList.add('ai-underline-active'), duration: 0.1 }, '-=0.2')
-    }
-    tl.to(imageWrap, { y: 0, scale: 1, opacity: 1, duration: 0.8, ease: 'power3.out' }, 0.2)
-    tl.to(contentEls, { y: 0, opacity: 1, duration: 0.5, stagger: 0.08, ease: 'power2.out' }, 0.5)
-
-    ScrollTrigger.create({
-      trigger: '#what-you-can-create',
-      start: 'top 80%',
-      onEnter: () => tl.play(),
-      once: true
-    })
   }
 
   // ============================================================
@@ -556,12 +410,9 @@
     // GSAP-dependent features
     if (!gsapAvailable()) return
 
-    initUsecaseStackingCards()
     initTestimonialStackingCards()
-    initMoreCardAnimation()
     initThemeTransitions()
     initRevealAnimations()
-    initCreateSectionEntrance()
     initDistractionHeader()
     initAccordion()
     initMetricCounters()
