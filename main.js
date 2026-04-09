@@ -141,56 +141,6 @@
   }
 
   // ============================================================
-  // THEME TRANSITIONS (CSS custom properties)
-  // ============================================================
-
-  function initThemeTransitions() {
-    const root = document.documentElement
-
-    const zones = [
-      {
-        trigger: '.gradient-transition-hero',
-        vars: { '--theme-bg': '#1a1a2e', '--theme-text': '#ffffff' },
-        start: 'top 80%', end: 'top 75%'
-      },
-      {
-        trigger: '.gradient-transition-why-pick',
-        vars: { '--theme-2-bg': '#FFF', '--theme-2-gradient-start': '#FFF' },
-        start: 'center 80%', end: 'center 20%'
-      },
-    ]
-
-    zones.forEach(({ trigger, vars, start, end }) => {
-      const el = document.querySelector(trigger)
-      if (!el) return
-      gsap.to(root, { ...vars, ease: 'none', scrollTrigger: { trigger: el, start, end, scrub: 1 } })
-    })
-
-    // Binary class toggles: parallel to GSAP tween for properties that can't use CSS variables (images, filters, etc.)
-    const classToggles = [
-      {
-        trigger: '.gradient-transition-hero',
-        start: 'top 80%',
-        cls: 'theme-dark',
-        target: root,
-      },
-      // Add new zones here as needed:
-      // { trigger: '.gradient-transition-why-pick', start: 'center 80%', cls: 'theme-light', target: root },
-    ]
-
-    classToggles.forEach(({ trigger, start, cls, target }) => {
-      const el = document.querySelector(trigger)
-      if (!el) return
-      ScrollTrigger.create({
-        trigger: el,
-        start,
-        onEnter: () => target.classList.add(cls),
-        onLeaveBack: () => target.classList.remove(cls),
-      })
-    })
-  }
-
-  // ============================================================
   // SCROLL-REVEAL ANIMATIONS
   // ============================================================
 
@@ -376,7 +326,6 @@
     if (!gsapAvailable()) return
 
     initTestimonialStackingCards()
-    initThemeTransitions()
     initRevealAnimations()
     initDistractionHeader()
     initAccordion()

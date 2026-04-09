@@ -206,16 +206,7 @@ p {
   object-fit: contain;
 }
 
-.theme-dark .integration-card[data-integration-id="chatgpt"] img {
-  filter: brightness(0) invert(1);
-}
-
 /* Breakpoints (Sygnal standard)- Mobile portrait (tiny): up to 478px- Mobile landscape (small): up to 767px- Tablet (medium): up to 991px- Desktop base (main): 992px–1279px- Large: 1280px and above- Extra large (xl): 1440px and above- Very large (xxl): 1920px and above*/
-.gradient-transition-hero {
-  height: 0;
-  background: var(--theme-bg);
-}
-
 .why-pick-section {
   background-color: var(--theme-2-bg);
   display: flex;
@@ -304,10 +295,6 @@ p {
 
 /* btn-outline removed in favor of btn-secondary */
 /* Button overrides removed in favor of unified system */
-.gradient-transition-why-pick {
-  height: 120px;
-  background: linear-gradient(180deg, var(--theme-2-bg) 0%, color-mix(in srgb, var(--theme-2-bg), var(--theme-3-bg) 20%) 30%, color-mix(in srgb, var(--theme-2-bg), var(--theme-3-bg) 50%) 50%, color-mix(in srgb, var(--theme-2-bg), var(--theme-3-bg) 80%) 70%, var(--theme-3-bg) 100%);
-}
 
 /* Distraction Section */
 .distraction-section {
@@ -977,10 +964,6 @@ p {
 
   .testimonial-card {
     flex-direction: column-reverse;
-  }
-
-  .gradient-transition-why-pick {
-    height: 50px;
   }
 }
 
