@@ -1715,3 +1715,143 @@ p {
     height: 50px;
   }
 }
+
+/* Hero title (from headless new-home-style + utilities) */
+
+:root {
+  --aha-pink: #FF4081;
+  --aha-green: #16C49A;
+  --aha-purple: #6A1EBB;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-danger {
+  color: #dc3545;
+}
+
+.d-none {
+  display: none !important;
+}
+
+@media (min-width: 768px) {
+  .d-md-block {
+    display: block !important;
+  }
+
+  .d-md-none {
+    display: none !important;
+  }
+
+  .hero-title > .header-non-en {
+    display: none !important;
+  }
+
+  html[lang]:not([lang^="en"]) .hero-title > .header-non-en {
+    display: block !important;
+  }
+}
+
+main .x-section:first-of-type .content-wrapper {
+  padding-top: 90px;
+}
+
+.hero-title {
+  max-width: 922px;
+}
+
+.main__title {
+  font-size: 40px;
+}
+
+html[lang^="en"] .hero-title > .header-en {
+  display: block !important;
+}
+
+@media (min-width: 1024px) {
+  .main__title {
+    font-size: 64px;
+  }
+}
+
+.multi-text {
+  display: inline-block;
+  position: relative;
+  width: 6em;
+  height: 1em;
+}
+
+.multi-text .status {
+  position: absolute;
+  transform: translateY(50%);
+  display: inline;
+  left: 0;
+  right: 0;
+  top: -3px;
+  opacity: 0;
+  animation: textChange 4.5s infinite;
+}
+
+.multi-text .status:nth-child(1) {
+  color: var(--aha-pink);
+  animation-delay: 0s;
+}
+
+.multi-text .status:nth-child(2) {
+  color: var(--aha-green);
+  animation-delay: 1.5s;
+}
+
+.multi-text .status:nth-child(3) {
+  color: var(--aha-purple);
+  animation-delay: 3s;
+}
+
+@keyframes textChange {
+  0% {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+
+  10% {
+    transform: translateY(-5%);
+    opacity: 1;
+  }
+
+  15% {
+    transform: translateY(0%);
+  }
+
+  25% {
+    transform: translateY(0%);
+  }
+
+  30% {
+    transform: translateY(5%);
+    opacity: 1;
+  }
+
+  40% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+}
+
+@media (476px < width < 535px) {
+  .multi-text .status {
+    text-align: left;
+  }
+}
+
+@media (534px < width < 576px), (768px < width < 1024px), (min-width: 1200px) {
+  .multi-text .status {
+    text-align: right;
+  }
+}
