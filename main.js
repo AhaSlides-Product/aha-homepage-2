@@ -166,7 +166,7 @@
       })
     }
 
-    reveal('.hero-homepage', '.hero-title, .btn.is-pink, .hero-feature-list > *')
+    reveal('.hero-feature-list > *')
     reveal('.why-pick-header', 'h2, p')
     reveal('.why-pick-grid', '.why-pick-card', { stagger: 0.15 })
     reveal('.why-pick-cta', '.btn', { stagger: 0.1 })
