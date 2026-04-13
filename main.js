@@ -59,17 +59,39 @@
   // ============================================================
 
   function initLazyVideos() {
-    const videos = document.querySelectorAll('video[loop][muted]')
+    const videos = document.querySelectorAll('video[data-src]')
     if (!videos.length) return
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.play().catch(() => {})
-        else entry.target.pause()
-      })
-    }, { threshold: 0.25 })
+    const interactionEvents = ['pointerdown', 'touchstart', 'keydown', 'scroll', 'mousemove', 'wheel']
+    let loaded = false
 
-    videos.forEach(v => observer.observe(v))
+    const loadVideos = () => {
+      if (loaded) return
+      loaded = true
+      interactionEvents.forEach(ev => window.removeEventListener(ev, loadVideos))
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const v = entry.target
+          if (entry.isIntersecting) {
+            if (v.dataset.src) {
+              v.src = v.dataset.src
+              v.removeAttribute('data-src')
+              v.load()
+            }
+            v.play().catch(() => {})
+          } else {
+            v.pause()
+          }
+        })
+      }, { threshold: 0.25 })
+
+      videos.forEach(v => observer.observe(v))
+    }
+
+    interactionEvents.forEach(ev =>
+      window.addEventListener(ev, loadVideos, { passive: true })
+    )
   }
 
   // ============================================================
