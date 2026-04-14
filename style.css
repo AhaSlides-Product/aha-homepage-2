@@ -149,6 +149,10 @@ p {
 
 /* ─── Hero title ─── */
 /* Language-based display: show animated version for English, static for others */
+.hero-title {
+  font-size: inherit;
+}
+
 .hero-title__static {
   display: none;
 }
@@ -171,6 +175,8 @@ html[lang]:not([lang^="en"]) .hero-title__animated {
   display: inline-grid;
   vertical-align: baseline;
   line-height: inherit;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .hero-multi-text-status {
