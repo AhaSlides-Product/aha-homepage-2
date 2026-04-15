@@ -182,6 +182,7 @@ html[lang]:not([lang^="en"]) .hero-title__animated {
 .hero-multi-text-status {
   grid-area: 1 / 1;
   color: var(--status-color);
+  text-align: right;
   will-change: transform, opacity;
   opacity: 0;
   transform: translateY(50%);
@@ -857,6 +858,10 @@ html[lang]:not([lang^="en"]) .hero-title__animated {
     font-size: 0.8rem;
   }
 
+  .hero-multi-text-status {
+    text-align: left;
+  }
+
   .integration-grid {
     gap: 2rem;
   }
@@ -986,6 +991,10 @@ html[lang]:not([lang^="en"]) .hero-title__animated {
     width: 100%;
   }
 
+  .hero-multi-text-status {
+    text-align: right;
+  }
+
   /* Integrations */
   .integrations .integrations-title {
     margin-bottom: 2rem;
@@ -1065,6 +1074,10 @@ html[lang]:not([lang^="en"]) .hero-title__animated {
   .topbar-url {
     display: none;
     /* Hide URL label to save space in topbar */
+  }
+
+  .hero-multi-text-status {
+    text-align: center;
   }
 
   .why-pick-section,
