@@ -188,7 +188,6 @@
       })
     }
 
-    reveal('.hero-feature-list', '.feature-card-link')
     reveal('.why-pick-header', 'h2, p')
     reveal('.why-pick-grid', '.why-pick-card', { stagger: 0.15 })
     reveal('.why-pick-cta', '.btn', { stagger: 0.1 })
