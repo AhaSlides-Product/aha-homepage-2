@@ -31,6 +31,20 @@
     const input = document.querySelector('.topbar-input')
     if (!btn || !input) return
 
+    // On touch devices (iOS Safari, iOS Chrome, Android, etc.) the browser
+    // auto-focuses the first visible input on page load, popping the keyboard
+    // and obscuring half the viewport. Guard: set readonly immediately so
+    // focus doesn't trigger the keyboard, then remove readonly when the user
+    // explicitly taps the input. pointer:coarse covers all touch screen
+    // devices without UA-sniffing.
+    if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+      input.setAttribute('readonly', 'true')
+      input.addEventListener('touchend', function () {
+        this.removeAttribute('readonly')
+        this.focus()
+      })
+    }
+
     const handleJoin = () => {
       const val = input.value.replace(/\s/g, '')
       if (!val) return
