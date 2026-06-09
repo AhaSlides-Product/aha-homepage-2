@@ -33,16 +33,19 @@
 
     // On touch devices (iOS Safari, iOS Chrome, Android, etc.) the browser
     // auto-focuses the first visible input on page load, popping the keyboard
-    // and obscuring half the viewport. Guard: set readonly immediately so
-    // focus doesn't trigger the keyboard, then remove readonly when the user
-    // explicitly taps the input. pointer:coarse covers all touch screen
-    // devices without UA-sniffing.
+    // and obscuring half the viewport. Guard: set readonly on load so that
+    // initial focus can't trigger the keyboard. Remove readonly on touchstart
+    // (the START of the user's tap) — not touchend — so the input is already
+    // editable by the time iOS decides whether to focus it and show the
+    // keyboard within that same tap. Removing it on touchend was too late:
+    // iOS evaluated the still-readonly input at touchstart, ignored the tap,
+    // and the user had to tap a second time. pointer:coarse covers all touch
+    // screen devices without UA-sniffing.
     if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
       input.setAttribute('readonly', 'true')
-      input.addEventListener('touchend', function () {
+      input.addEventListener('touchstart', function () {
         this.removeAttribute('readonly')
-        this.focus()
-      })
+      }, { once: true })
     }
 
     const handleJoin = () => {
