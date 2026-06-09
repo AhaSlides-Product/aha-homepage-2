@@ -34,18 +34,29 @@
     // On touch devices (iOS Safari, iOS Chrome, Android, etc.) the browser
     // auto-focuses the first visible input on page load, popping the keyboard
     // and obscuring half the viewport. Guard: set readonly on load so that
-    // initial focus can't trigger the keyboard. Remove readonly on touchstart
-    // (the START of the user's tap) — not touchend — so the input is already
-    // editable by the time iOS decides whether to focus it and show the
-    // keyboard within that same tap. Removing it on touchend was too late:
-    // iOS evaluated the still-readonly input at touchstart, ignored the tap,
-    // and the user had to tap a second time. pointer:coarse covers all touch
-    // screen devices without UA-sniffing.
+    // initial focus can't trigger the keyboard, then remove it on the user's
+    // first real interaction.
+    //
+    // We listen on window in the CAPTURING phase for touchstart/mousedown/
+    // keydown so readonly is gone before the browser evaluates focus on the
+    // input — within the same gesture, so iOS Safari focuses on a single tap.
+    // Covering all three event types (not just touchstart) keeps the input
+    // editable for hybrid devices that match pointer:coarse but are driven by
+    // a mouse/trackpad (iPad + trackpad, touch laptops) and for keyboard
+    // navigation. The load-time auto-focus is still blocked because it fires
+    // no user-interaction event. pointer:coarse covers touch screens without
+    // UA-sniffing.
     if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
       input.setAttribute('readonly', 'true')
-      input.addEventListener('touchstart', function () {
-        this.removeAttribute('readonly')
-      }, { once: true })
+      const removeReadonly = () => {
+        input.removeAttribute('readonly')
+        window.removeEventListener('touchstart', removeReadonly, true)
+        window.removeEventListener('mousedown', removeReadonly, true)
+        window.removeEventListener('keydown', removeReadonly, true)
+      }
+      window.addEventListener('touchstart', removeReadonly, true)
+      window.addEventListener('mousedown', removeReadonly, true)
+      window.addEventListener('keydown', removeReadonly, true)
     }
 
     const handleJoin = () => {
