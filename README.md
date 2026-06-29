@@ -39,3 +39,21 @@ Typical loop:
 1. `npm run pull` to refresh `index.html` after a Webflow change.
 2. Edit `style.css` / `main.js`.
 3. Commit only the CSS/JS changes (the HTML stays untracked).
+
+## Release & deploy
+
+Merging to `master` no longer deploys. Deploy is manual, from a release tag,
+and publishes only `style.css` and `main.js`.
+
+Cut a release (replace `20260629` with the real date):
+
+```bash
+git checkout master && git pull
+git checkout -b release-20260629 && git push -u origin release-20260629
+git tag v.release-20260629 && git push origin v.release-20260629
+```
+
+Then deploy: **Actions → Deploy to Pages → Run workflow**, select the tag
+`v.release-20260629`, and run.
+
+> One-time setup: **Settings → Pages → Source → GitHub Actions**.
