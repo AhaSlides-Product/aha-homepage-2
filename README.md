@@ -42,34 +42,18 @@ Typical loop:
 
 ## Release & deploy
 
-GitHub Pages **không còn tự deploy khi merge vào `master`**. Deploy chỉ xảy ra
-khi dev chạy workflow thủ công, dựa trên một tag release.
+Merging to `master` no longer deploys. Deploy is manual, from a release tag,
+and publishes only `style.css` and `main.js`.
 
-Chỉ `style.css` và `main.js` được publish (đúng 2 file Webflow tham chiếu tại
-`https://ahaslides-product.github.io/aha-homepage-2/`).
-
-### Quy trình release
+Cut a release (replace `20260629` with the real date):
 
 ```bash
-# 1. Đảm bảo master đã có các feature cần release
-git checkout master
-git pull
-
-# 2. Tạo branch release theo ngày (đổi 20260629 thành ngày thật)
-git checkout -b release-20260629
-git push -u origin release-20260629
-
-# 3. Tạo tag và push
-git tag v.release-20260629
-git push origin v.release-20260629
+git checkout master && git pull
+git checkout -b release-20260629 && git push -u origin release-20260629
+git tag v.release-20260629 && git push origin v.release-20260629
 ```
 
-### 4. Deploy thủ công
+Then deploy: **Actions → Deploy to Pages → Run workflow**, select the tag
+`v.release-20260629`, and run.
 
-1. Mở GitHub → tab **Actions** → workflow **Deploy to Pages**.
-2. Bấm **Run workflow**.
-3. Ở dropdown *"Use workflow from"* chọn tag `v.release-20260629`.
-4. Bấm **Run workflow** và đợi cả 2 job (`build`, `deploy`) xanh.
-
-> Lần thiết lập đầu tiên: vào **Settings → Pages → Source** và chọn
-> **GitHub Actions** (thay cho "Deploy from a branch").
+> One-time setup: **Settings → Pages → Source → GitHub Actions**.
