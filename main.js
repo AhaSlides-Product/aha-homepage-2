@@ -150,43 +150,64 @@
       .filter(st => [...cards].some(c => st.trigger === c || st.vars?.trigger === c))
       .forEach(st => st.kill())
 
-    const getStickyTop = (card) => parseFloat(getComputedStyle(card).top) || 0
+    const cardEls = Array.from(cards)
 
-    cards.forEach((card, i) => {
+    cardEls.forEach((card, i) => {
       card.style.zIndex = i + 1
       card.style.transition = 'none'
       card.style.opacity = ''
       card.style.transform = ''
     })
 
+    // Sticky `top` only changes on layout/resize, not on scroll. Measure it once
+    // (and on resize) so the per-frame handler never calls getComputedStyle, which
+    // forces a synchronous style/layout recalc for every card on every frame.
+    let stickyTops = []
+    const measureStickyTops = () => {
+      stickyTops = cardEls.map((card) => parseFloat(getComputedStyle(card).top) || 0)
+    }
+
     const update = () => {
+      // READ phase — batch every layout read before any write, so the frame pays at
+      // most one forced reflow instead of one per card (read→write→read thrashing).
+      const rectTops = cardEls.map((card) => card.getBoundingClientRect().top)
+      const heights = cardEls.map((card) => card.offsetHeight)
+
+      // COMPUTE phase — pure math, no DOM access.
       let activeIndex = -1
+      const opacities = new Array(cardEls.length)
+      const transforms = new Array(cardEls.length)
+      for (let i = 0; i < cardEls.length; i++) {
+        const stickyTop = stickyTops[i]
+        if (rectTops[i] <= stickyTop + 15) activeIndex = i
 
-      cards.forEach((card, i) => {
-        const stickyTop = getStickyTop(card)
-        if (card.getBoundingClientRect().top <= stickyTop + 15) activeIndex = i
-        card.classList.toggle('card--past', false)
+        if (i >= cardEls.length - 1) continue
 
-        if (i >= cards.length - 1) return
-
-        const nextCard = cards[i + 1]
-        const startY = stickyTop + card.offsetHeight
+        const startY = stickyTop + heights[i]
         const endY = stickyTop
-        const nextY = nextCard.getBoundingClientRect().top
+        const nextY = rectTops[i + 1]
 
         let p = 0
         if (nextY <= endY) p = 1
         else if (nextY < startY) p = (startY - nextY) / (startY - endY)
 
-        card.style.opacity = p > 0 ? String(1 - p) : ''
-        card.style.transform = p > 0 ? `scale(${1 - 0.2 * p}) translateZ(0)` : ''
-      })
+        opacities[i] = p > 0 ? String(1 - p) : ''
+        transforms[i] = p > 0 ? `scale(${1 - 0.2 * p}) translateZ(0)` : ''
+      }
 
-      cards.forEach((card, i) => card.classList.toggle('card--past', i < activeIndex))
+      // WRITE phase — apply all DOM mutations together.
+      for (let i = 0; i < cardEls.length; i++) {
+        if (i < cardEls.length - 1) {
+          cardEls[i].style.opacity = opacities[i]
+          cardEls[i].style.transform = transforms[i]
+        }
+        cardEls[i].classList.toggle('card--past', i < activeIndex)
+      }
     }
 
+    measureStickyTops()
     window.addEventListener('scroll', rafThrottle(update), { passive: true })
-    window.addEventListener('resize', rafThrottle(update), { passive: true })
+    window.addEventListener('resize', rafThrottle(() => { measureStickyTops(); update() }), { passive: true })
     update()
   }
 
